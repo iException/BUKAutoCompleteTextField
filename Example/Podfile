@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'BUKAutoCompleteTextField_Example' do
+  pod 'BUKAutoCompleteTextField', :path => '../'
+
+  target 'BUKAutoCompleteTextField_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
