@@ -11,6 +11,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+## SnapShots
+![img](http://o7b20it1b.bkt.clouddn.com/autocompleteTextField.png)
+
 ## Installation
 
 BUKAutoCompleteTextField is available through [CocoaPods](http://cocoapods.org). To install

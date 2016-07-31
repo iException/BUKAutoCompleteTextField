@@ -1,0 +1,16 @@
+PODS:
+  - BUKAutoCompleteTextField (0.1.0)
+
+DEPENDENCIES:
+  - BUKAutoCompleteTextField (from `../`)
+
+EXTERNAL SOURCES:
+  BUKAutoCompleteTextField:
+    :path: ../
+
+SPEC CHECKSUMS:
+  BUKAutoCompleteTextField: 5265197f0f442646e5a26b8e3e99c6033e919a1e
+
+PODFILE CHECKSUM: 4e230ddfa678c2a13f24523c388d566852d686bb
+
+COCOAPODS: 1.0.1

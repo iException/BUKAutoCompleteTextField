@@ -1,0 +1,6 @@
+framework module BUKAutoCompleteTextField {
+  umbrella header "BUKAutoCompleteTextField-umbrella.h"
+
+  export *
+  module * { export * }
+}

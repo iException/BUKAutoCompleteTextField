@@ -1,0 +1,22 @@
+{
+  "name": "BUKAutoCompleteTextField",
+  "version": "0.1.0",
+  "summary": "A short description of BUKAutoCompleteTextField.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/BUKAutoCompleteTextField",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "monzy613": "monzy613@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/BUKAutoCompleteTextField.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "BUKAutoCompleteTextField/Classes/**/*"
+}

@@ -7,6 +7,7 @@
 //
 
 #import "BUKViewController.h"
+#import "BUKAutoCompleteTextField/BUKAutoCompleteTextField.h"
 
 @interface BUKViewController ()
 
@@ -17,13 +18,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    BUKAutoCompleteTextField *textField = [[BUKAutoCompleteTextField alloc] init];
+    textField.frame = CGRectMake(20, 20, 335, 50);
+    textField.placeholder = @"enter phone number";
+    textField.font = [UIFont systemFontOfSize:16.0];
+    textField.autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
+    [textField setAutoCompleteLabelDidChangeTextHandler:^(NSString *old, NSString *new) {
+        NSLog(@"old: %@, new: %@", old, new);
+    }];
+    [self.view addSubview:textField];
 }
 
 @end
