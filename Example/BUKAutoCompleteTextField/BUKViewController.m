@@ -68,7 +68,7 @@
 
 - (IBAction)complete:(id)sender
 {
-    [self.textField updateTextFieldTextWithHintLabel];
+    [self.view endEditing:YES];
 }
 
 @end

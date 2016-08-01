@@ -10,61 +10,55 @@
 #import <objc/runtime.h>
 
 static void const* hintLabelKey = &hintLabelKey;
+static void const* autoCompleteKVOManagerKey = &autoCompleteKVOManagerKey;
 static void const* autoCompleteDataSourceKey = &autoCompleteDataSourceKey;
 static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeTextHandlerKey;
 
-@implementation UITextField (BUKAutoComplete)
 
-+ (void)load
-{
-    [self exchange_implementations:@selector(sw_dealloc) selector2:NSSelectorFromString(@"dealloc")];
-    [self exchange_implementations:@selector(initWithFrame:) selector2:@selector(sw_initWithFrame:)];
-}
+#pragma mark - kvo manager -
+@interface BUKAutoCompleteKVOManager : NSObject
 
-+ (void)exchange_implementations:(SEL)selector1 selector2:(SEL)selector2
-{
-    Method m1 = class_getInstanceMethod(self, selector1);
-    Method m2 = class_getInstanceMethod(self, selector2);
-    method_exchangeImplementations(m1, m2);
-}
+@property (nonatomic, weak) UITextField *textField;
 
-#pragma mark - swizzle -
-- (void)sw_dealloc
-{
-    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(bounds))];
-    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(font))];
-    [self sw_dealloc];
-}
+- (instancetype)initWithTextField:(UITextField *)textField;
 
-- (instancetype)sw_initWithFrame:(CGRect)frame
+@end
+
+@implementation BUKAutoCompleteKVOManager
+
+- (instancetype)initWithTextField:(UITextField *)textField
 {
-    [self sw_initWithFrame:frame];
+    self = [super init];
     if (self) {
-        [self addSubview:self.hintLabel];
+        _textField = textField;
         [self setupObservers];
-        [self addTarget:self action:@selector(textDidChange) forControlEvents:UIControlEventEditingChanged];
     }
     return self;
 }
 
-#pragma mark - public -
-- (void)updateTextFieldTextWithHintLabel
+#pragma mark - kvo -
+- (void)setupObservers
 {
-    if (!self.hintLabel.text.length || !self.autoCompleteDataSource.count) {
-        return;
-    }
-    self.text = self.hintLabel.text;
+    [self.textField addObserver:self forKeyPath:NSStringFromSelector(@selector(bounds)) options:NSKeyValueObservingOptionNew context:nil];
+    [self.textField addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew context:nil];
 }
 
-#pragma mark - kvo -
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-    if (object == self && [keyPath isEqualToString:NSStringFromSelector(@selector(bounds))]) {
-        self.hintLabel.frame = self.bounds;
-    } else if (object == self && [keyPath isEqualToString:NSStringFromSelector(@selector(font))]) {
-        self.hintLabel.font = self.font;
+    if (!self.textField.autoCompleteDataSource.count) {
+        return;
+    }
+    if (object == self.textField && [keyPath isEqualToString:NSStringFromSelector(@selector(bounds))]) {
+        self.textField.hintLabel.frame = self.textField.bounds;
+    } else if (object == self.textField && [keyPath isEqualToString:NSStringFromSelector(@selector(font))]) {
+        self.textField.hintLabel.font = self.textField.font;
     }
 }
+
+@end
+
+#pragma mark - category -
+@implementation UITextField (BUKAutoComplete)
 
 #pragma mark - action handlers -
 - (void)textDidChange
@@ -73,10 +67,12 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 }
 
 #pragma mark - privates -
-- (void)setupObservers
+- (void)autoCompleteTextField
 {
-    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(bounds)) options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew context:nil];
+    if (!self.hintLabel.text.length || !self.autoCompleteDataSource.count) {
+        return;
+    }
+    self.text = self.hintLabel.text;
 }
 
 - (void)updateAutoCompleteTextWithPrefix:(NSString *)prefix
@@ -99,10 +95,22 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
     self.hintLabel.text = newAutoCompleteString;
 }
 
+- (void)initAutoComplete
+{
+    [self addSubview:self.hintLabel];
+    [self addTarget:self action:@selector(textDidChange) forControlEvents:UIControlEventEditingChanged];
+    [self addTarget:self action:@selector(autoCompleteTextField) forControlEvents:UIControlEventEditingDidEnd];
+    objc_setAssociatedObject(self, autoCompleteKVOManagerKey, [[BUKAutoCompleteKVOManager alloc] initWithTextField:self], OBJC_ASSOCIATION_RETAIN);
+}
+
 #pragma mark - getters && setters -
 #pragma mark - setters
 - (void)setAutoCompleteDataSource:(NSArray<NSString *> *)autoCompleteDataSource
 {
+    if (!autoCompleteDataSource.count) {
+        return;
+    }
+    [self initAutoComplete];
     objc_setAssociatedObject(self, autoCompleteDataSourceKey, autoCompleteDataSource, OBJC_ASSOCIATION_RETAIN);
 }
 
@@ -135,5 +143,4 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
     void(^handler)(NSString *oldText, NSString *newText) = objc_getAssociatedObject(self, autoCompleteDidChangeTextHandlerKey);
     return handler;
 }
-
 @end
