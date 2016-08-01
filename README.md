@@ -8,6 +8,16 @@
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
+```objc
+UITextField *textField = [[UITextField alloc] init];
+textField.translatesAutoresizingMaskIntoConstraints = NO;
+textField.placeholder = @"enter phone number";
+textField.font = [UIFont systemFontOfSize:16.0];
+textField.autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
+[textField setAutoCompleteLabelDidChangeTextHandler:^(NSString *old, NSString *new) {
+    NSLog(@"old: %@, new: %@", old, new);
+}];
+```
 
 ## Requirements
 

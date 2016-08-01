@@ -7,9 +7,12 @@
 //
 
 #import "BUKViewController.h"
-#import "BUKAutoCompleteTextField/BUKAutoCompleteTextField.h"
+//#import "BUKAutoCompleteTextField/BUKAutoCompleteTextField.h"
+#import "BUKAutoCompleteTextField/UITextField+BUKAutoComplete.h"
 
 @interface BUKViewController ()
+
+@property (nonatomic, strong) UITextField *textField;
 
 @end
 
@@ -18,18 +21,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    BUKAutoCompleteTextField *textField = [[BUKAutoCompleteTextField alloc] init];
-    textField.translatesAutoresizingMaskIntoConstraints = NO;
-    textField.placeholder = @"enter phone number";
-    textField.font = [UIFont systemFontOfSize:16.0];
-    textField.autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
-    [textField setAutoCompleteLabelDidChangeTextHandler:^(NSString *old, NSString *new) {
+    self.textField = [[UITextField alloc] init];
+    self.textField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.textField.placeholder = @"enter phone number";
+    self.textField.font = [UIFont systemFontOfSize:16.0];
+    self.textField.autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
+    [self.textField setAutoCompleteLabelDidChangeTextHandler:^(NSString *old, NSString *new) {
         NSLog(@"old: %@, new: %@", old, new);
     }];
-    [self.view addSubview:textField];
+    [self.view addSubview:self.textField];
     [self.view addConstraints:@[
                                 [NSLayoutConstraint
-                                 constraintWithItem:textField
+                                 constraintWithItem:self.textField
                                  attribute:NSLayoutAttributeLeft
                                  relatedBy:NSLayoutRelationEqual
                                  toItem:self.view
@@ -37,7 +40,7 @@
                                  multiplier:1.0
                                  constant:0.0],
                                 [NSLayoutConstraint
-                                 constraintWithItem:textField
+                                 constraintWithItem:self.textField
                                  attribute:NSLayoutAttributeRight
                                  relatedBy:NSLayoutRelationEqual
                                  toItem:self.view
@@ -45,7 +48,7 @@
                                  multiplier:1.0
                                  constant:0.0],
                                 [NSLayoutConstraint
-                                 constraintWithItem:textField
+                                 constraintWithItem:self.textField
                                  attribute:NSLayoutAttributeTop
                                  relatedBy:NSLayoutRelationEqual
                                  toItem:self.view
@@ -53,7 +56,7 @@
                                  multiplier:1.0
                                  constant:20.0],
                                 [NSLayoutConstraint
-                                 constraintWithItem:textField
+                                 constraintWithItem:self.textField
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:NSLayoutRelationEqual
                                  toItem:nil
@@ -61,6 +64,11 @@
                                  multiplier:1.0
                                  constant:30.0],
                                 ]];
+}
+
+- (IBAction)complete:(id)sender
+{
+    [self.textField updateTextFieldTextWithHintLabel];
 }
 
 @end

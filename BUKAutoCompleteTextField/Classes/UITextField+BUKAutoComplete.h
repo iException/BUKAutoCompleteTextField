@@ -1,14 +1,14 @@
 //
-//  BUKAutoCompleteTextField.h
+//  UITextField+BUKAutoComplete.h
 //  Pods
 //
-//  Created by Monzy Zhang on 31/07/2016.
+//  Created by Monzy Zhang on 01/08/2016.
 //
 //
 
 #import <UIKit/UIKit.h>
 
-@interface BUKAutoCompleteTextField : UITextField
+@interface UITextField (BUKAutoComplete)
 
 @property (nonatomic, strong, readonly) UILabel *hintLabel;
 @property (nonatomic, strong) NSArray<NSString *> *autoCompleteDataSource;
