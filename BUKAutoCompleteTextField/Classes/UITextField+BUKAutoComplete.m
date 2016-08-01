@@ -43,7 +43,7 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
     [self.textField addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *, id> *)change context:(void *)context
 {
     if (!self.textField.autoCompleteDataSource.count) {
         return;
