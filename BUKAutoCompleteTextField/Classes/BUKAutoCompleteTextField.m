@@ -32,12 +32,20 @@
 #pragma mark - kvo -
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-    [self.superview addSubview:self.hintLabel];
-    if (object == self && [keyPath isEqualToString:NSStringFromSelector(@selector(frame))]) {
+    if (object == self && [keyPath isEqualToString:NSStringFromSelector(@selector(bounds))]) {
         self.hintLabel.frame = self.bounds;
     } else if (object == self && [keyPath isEqualToString:NSStringFromSelector(@selector(font))]) {
         self.hintLabel.font = self.font;
     }
+}
+
+#pragma mark - public -
+- (void)updateTextFieldTextWithHintLabel
+{
+    if (!self.hintLabel.text.length || !self.autoCompleteDataSource.count) {
+        return;
+    }
+    self.text = self.hintLabel.text;
 }
 
 #pragma mark - action handlers -
@@ -49,7 +57,7 @@
 #pragma mark - privates -
 - (void)setupObservers
 {
-    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(frame)) options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(bounds)) options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew context:nil];
 }
 

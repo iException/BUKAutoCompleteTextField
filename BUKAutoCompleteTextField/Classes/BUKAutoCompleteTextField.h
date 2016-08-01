@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSArray<NSString *> *autoCompleteDataSource;
 @property (nonatomic, copy) void(^autoCompleteLabelDidChangeTextHandler)(NSString *oldText, NSString *newText);
 
+- (void)updateTextFieldTextWithHintLabel;
+
 @end
