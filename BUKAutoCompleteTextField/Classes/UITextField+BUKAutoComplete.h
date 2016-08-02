@@ -10,8 +10,8 @@
 
 @interface UITextField (BUKAutoComplete)
 
-@property (nonatomic, strong, readonly) UILabel *hintLabel;
-@property (nonatomic, strong) NSArray<NSString *> *autoCompleteDataSource;
-@property (nonatomic, copy) void(^autoCompleteLabelDidChangeTextHandler)(NSString *oldText, NSString *newText);
+@property (nonatomic, strong, readonly) UILabel *buk_autoCompleteLabel;
+@property (nonatomic, strong) NSArray<NSString *> *buk_autoCompleteDataSource;
+@property (nonatomic, copy) void(^buk_autoCompleteLabelDidChangeTextHandler)(NSString *oldText, NSString *newText);
 
 @end

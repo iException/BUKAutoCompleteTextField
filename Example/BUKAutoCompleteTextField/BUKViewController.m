@@ -7,7 +7,6 @@
 //
 
 #import "BUKViewController.h"
-//#import "BUKAutoCompleteTextField/BUKAutoCompleteTextField.h"
 #import "BUKAutoCompleteTextField/UITextField+BUKAutoComplete.h"
 
 @interface BUKViewController ()
@@ -25,10 +24,7 @@
     self.textField.translatesAutoresizingMaskIntoConstraints = NO;
     self.textField.placeholder = @"enter phone number";
     self.textField.font = [UIFont systemFontOfSize:16.0];
-    self.textField.autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
-    [self.textField setAutoCompleteLabelDidChangeTextHandler:^(NSString *old, NSString *new) {
-        NSLog(@"old: %@, new: %@", old, new);
-    }];
+    self.textField.buk_autoCompleteDataSource = @[@"15316699712", @"15416699712", @"18316699712"];
     [self.view addSubview:self.textField];
     [self.view addConstraints:@[
                                 [NSLayoutConstraint
@@ -69,6 +65,8 @@
 - (IBAction)complete:(id)sender
 {
     [self.view endEditing:YES];
+    [self.textField removeFromSuperview];
+    self.textField = nil;
 }
 
 @end
