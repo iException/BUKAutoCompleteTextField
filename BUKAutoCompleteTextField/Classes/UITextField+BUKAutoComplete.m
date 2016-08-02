@@ -1,4 +1,4 @@
-    //
+//
 //  UITextField+BUKAutoComplete.m
 //  Pods
 //
@@ -31,6 +31,12 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 {
     [self bukAutoComplete_setBounds:bounds];
     self.buk_autoCompleteLabel.frame = bounds;
+}
+
+- (void)bukAutoComplete_setFrame:(CGRect)frame
+{
+    [self bukAutoComplete_setFrame:frame];
+    self.buk_autoCompleteLabel.frame = self.bounds;
 }
 
 - (void)bukAutoComplete_setFont:(UIFont *)font
@@ -77,6 +83,7 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 - (void)buk_initAutoComplete
 {
     [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setBounds:))];
+    [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFrame:))];
     [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFont:))];
     [self addSubview:self.buk_autoCompleteLabel];
     [self addTarget:self action:@selector(buk_textDidChange) forControlEvents:UIControlEventEditingChanged];
