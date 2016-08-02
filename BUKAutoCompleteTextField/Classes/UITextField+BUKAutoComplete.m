@@ -15,13 +15,7 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 
 @implementation UITextField (BUKAutoComplete)
 
-#pragma mark - action handlers -
-+ (void)load
-{
-    [self bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setBounds:))];
-    [self bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFont:))];
-}
-
+#pragma mark - swizzle -
 + (void)bukAutoComplete_SwizzlingMethodOfOriginName:(NSString *)originName;
 {
     SEL originalSelector = NSSelectorFromString(originName);
@@ -82,6 +76,8 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 
 - (void)buk_initAutoComplete
 {
+    [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setBounds:))];
+    [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFont:))];
     [self addSubview:self.buk_autoCompleteLabel];
     [self addTarget:self action:@selector(buk_textDidChange) forControlEvents:UIControlEventEditingChanged];
     [self addTarget:self action:@selector(buk_autoCompleteTextField) forControlEvents:UIControlEventEditingDidEnd];
