@@ -33,16 +33,16 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
     self.buk_autoCompleteLabel.frame = bounds;
 }
 
-- (void)bukAutoComplete_setFrame:(CGRect)frame
-{
-    [self bukAutoComplete_setFrame:frame];
-    self.buk_autoCompleteLabel.frame = self.bounds;
-}
-
 - (void)bukAutoComplete_setFont:(UIFont *)font
 {
     [self bukAutoComplete_setFont:font];
     self.buk_autoCompleteLabel.font = font;
+}
+
+- (void)bukAutoComplete_layoutSubviews
+{
+    [self bukAutoComplete_layoutSubviews];
+    self.buk_autoCompleteLabel.frame = self.bounds;
 }
 
 #pragma mark - action handler -
@@ -83,8 +83,8 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 - (void)buk_initAutoComplete
 {
     [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setBounds:))];
-    [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFrame:))];
     [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(setFont:))];
+    [[self class] bukAutoComplete_SwizzlingMethodOfOriginName:NSStringFromSelector(@selector(layoutSubviews))];
     [self addSubview:self.buk_autoCompleteLabel];
     [self addTarget:self action:@selector(buk_textDidChange) forControlEvents:UIControlEventEditingChanged];
     [self addTarget:self action:@selector(buk_autoCompleteTextField) forControlEvents:UIControlEventEditingDidEnd];
