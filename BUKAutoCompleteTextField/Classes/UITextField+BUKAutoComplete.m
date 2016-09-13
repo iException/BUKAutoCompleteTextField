@@ -94,9 +94,6 @@ static void const* autoCompleteDidChangeTextHandlerKey = &autoCompleteDidChangeT
 #pragma mark - setters
 - (void)setBuk_autoCompleteDataSource:(NSArray<NSString *> *)buk_autoCompleteDataSource
 {
-    if (!buk_autoCompleteDataSource.count) {
-        return;
-    }
     [self buk_initAutoComplete];
     objc_setAssociatedObject(self, autoCompleteDataSourceKey, buk_autoCompleteDataSource, OBJC_ASSOCIATION_RETAIN);
 }
